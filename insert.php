@@ -9,10 +9,6 @@
     <center>
         <?php
   
-        // servername => localhost
-        // username => root
-        // password => empty
-        // database name => reservation_system
         $conn = mysqli_connect("localhost", "root", "", "reservation_system");
           
         // Check connection
