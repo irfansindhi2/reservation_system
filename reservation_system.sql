@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: 127.0.0.1
--- Generation Time: Nov 17, 2021 at 09:49 PM
+-- Generation Time: Nov 28, 2021 at 04:25 AM
 -- Server version: 10.4.21-MariaDB
 -- PHP Version: 7.3.31
 
@@ -24,82 +24,99 @@ SET time_zone = "+00:00";
 -- --------------------------------------------------------
 
 --
--- Table structure for table `registered_users`
---
-
-CREATE TABLE `registered_users` (
-  `user_id` int(255) NOT NULL,
-  `user_name` varchar(255) NOT NULL
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
-
---
--- Dumping data for table `registered_users`
---
-
-INSERT INTO `registered_users` (`user_id`, `user_name`) VALUES
-(5, 'irfan');
-
--- --------------------------------------------------------
-
---
 -- Table structure for table `reservation_log`
 --
 
 CREATE TABLE `reservation_log` (
   `reserve_id` int(255) NOT NULL,
   `user_id` int(255) NOT NULL,
-  `reserve_time` timestamp NOT NULL DEFAULT current_timestamp()
+  `date` datetime DEFAULT NULL,
+  `guest_num` int(255) DEFAULT NULL,
+  `table_ids` varchar(255) DEFAULT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
+
+-- --------------------------------------------------------
+
+--
+-- Table structure for table `table_info`
+--
+
+CREATE TABLE `table_info` (
+  `table_id` int(255) NOT NULL,
+  `table_capacity` int(255) DEFAULT NULL,
+  `table_occupied` int(255) DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
 
 --
--- Dumping data for table `reservation_log`
+-- Dumping data for table `table_info`
 --
 
-INSERT INTO `reservation_log` (`reserve_id`, `user_id`, `reserve_time`) VALUES
-(1, 5, '2021-11-17 20:49:04');
+INSERT INTO `table_info` (`table_id`, `table_capacity`, `table_occupied`) VALUES
+(1, 2, 0),
+(2, 4, 0),
+(3, 6, 0),
+(4, 8, 0),
+(5, 2, 1);
+
+-- --------------------------------------------------------
+
+--
+-- Table structure for table `users`
+--
+
+CREATE TABLE `users` (
+  `user_id` int(255) NOT NULL,
+  `user_name` varchar(255) DEFAULT NULL,
+  `user_pass` varchar(255) DEFAULT NULL,
+  `name` varchar(255) DEFAULT NULL,
+  `phone` varchar(255) DEFAULT NULL,
+  `email` varchar(255) DEFAULT NULL,
+  `date` datetime DEFAULT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
 
 --
 -- Indexes for dumped tables
 --
 
 --
--- Indexes for table `registered_users`
---
-ALTER TABLE `registered_users`
-  ADD PRIMARY KEY (`user_id`);
-
---
 -- Indexes for table `reservation_log`
 --
 ALTER TABLE `reservation_log`
-  ADD PRIMARY KEY (`reserve_id`),
-  ADD KEY `user_reservation` (`user_id`);
+  ADD PRIMARY KEY (`reserve_id`);
+
+--
+-- Indexes for table `table_info`
+--
+ALTER TABLE `table_info`
+  ADD PRIMARY KEY (`table_id`);
+
+--
+-- Indexes for table `users`
+--
+ALTER TABLE `users`
+  ADD PRIMARY KEY (`user_id`);
 
 --
 -- AUTO_INCREMENT for dumped tables
 --
 
 --
--- AUTO_INCREMENT for table `registered_users`
---
-ALTER TABLE `registered_users`
-  MODIFY `user_id` int(255) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=6;
-
---
 -- AUTO_INCREMENT for table `reservation_log`
 --
 ALTER TABLE `reservation_log`
-  MODIFY `reserve_id` int(255) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=2;
+  MODIFY `reserve_id` int(255) NOT NULL AUTO_INCREMENT;
 
 --
--- Constraints for dumped tables
+-- AUTO_INCREMENT for table `table_info`
 --
+ALTER TABLE `table_info`
+  MODIFY `table_id` int(255) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=6;
 
 --
--- Constraints for table `reservation_log`
+-- AUTO_INCREMENT for table `users`
 --
-ALTER TABLE `reservation_log`
-  ADD CONSTRAINT `user_reservation` FOREIGN KEY (`user_id`) REFERENCES `registered_users` (`user_id`) ON DELETE CASCADE ON UPDATE CASCADE;
+ALTER TABLE `users`
+  MODIFY `user_id` int(255) NOT NULL AUTO_INCREMENT;
 COMMIT;
 
 /*!40101 SET CHARACTER_SET_CLIENT=@OLD_CHARACTER_SET_CLIENT */;
