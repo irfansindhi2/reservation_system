@@ -1,34 +1,69 @@
 <?php
-$conn = mysqli_connect("localhost", "root", "", "reservation_system");
-          
-// Check connection
-if($conn === false){
-    die("ERROR: Could not connect. " 
-        . mysqli_connect_error());
-}
-
-$sql = "SELECT table_id, table_capacity, table_occupied FROM table_info";
-$result = $conn->query($sql);
-
-if ($result->num_rows > 0) { 
-  // output data of each row
-  $tableid = array();
-  $table_capacity = array();
-  $table_occupied = array();
-  while($row = $result->fetch_assoc()) {
-    array_push($tableid, $row["table_id"]);
-    array_push($table_capacity, $row["table_capacity"]);
-    array_push($table_occupied, $row["table_occupied"]);
-
-    if($row["table_occupied"] == 0){
-        echo "table_id: " . $row["table_id"]. " table_capacity: " . $row["table_capacity"]. " table_occupied <a>" . $row["table_occupied"]. "</a><br>";
-    }
-    else{
-        echo "table_id: " . $row["table_id"]. " table_capacity: " . $row["table_capacity"]. " table_occupied " . $row["table_occupied"]. "<br>";
-    }
-}
-} else {
-  echo "0 results";
-}
-$conn->close();
+require('header.php');
 ?>
+
+<?php
+if(isset($_POST['confirm'])){
+    var_dump($_SESSION);
+    $tablesoccupied = true;
+    $tidsarr = explode(',', $_SESSION['total_table_ids']);
+    $idsql = "SELECT table_occupied FROM table_info WHERE";
+    foreach($tidsarr as $id)
+    {
+        $idsql .= " table_id=$id OR";
+    }
+    $idsql = substr($idsql, 0, -2);
+    $result = $conn->query($idsql);
+    $result = $result->fetch_all();
+    // print_r($result[0][0]);
+
+    foreach($result as $key=>$val){ 
+        foreach($val as $k=>$v){ 
+            if($v == 1){
+                $tablesoccupied = true;
+            }else{
+                $tablesoccupied = false;
+                //echo $v . '<br />';
+            }   
+        }
+    }
+    echo $tablesoccupied;
+    if($tablesoccupied == false){
+        // insert new reservation
+        $sql = "INSERT INTO reservation_log (startdatetime, guest_num, table_ids) VALUES ('{$_SESSION['post-data']['date']}', '{$_SESSION['post-data']['guests']}', '{$_SESSION['total_table_ids']}')";
+        $conn->query($sql);
+        
+        // update occupied tables
+        $sql = "UPDATE table_info SET table_occupied = '1' WHERE";
+        foreach($tidsarr as $id)
+        {
+            $sql .= " table_id=$id OR";
+        }
+        $sql = substr($sql, 0, -2);
+        echo $sql;
+        $conn->query($sql);
+    }else{
+        echo "tables are already booked!";
+    }
+}
+?>
+
+<!DOCTYPE html>
+<html lang="en">
+  
+<head>
+    <title>Review Reservation</title>
+</head>
+
+<body>
+    <?php
+        echo "<h1>You have reserved ". $_SESSION['table_seats']. " seat(s) of " . $_SESSION['table_counter'] . " tables </h1>";
+    ?>
+    <br>
+    <h2>Confirm Reservation: </h2>
+    <form action="" method="post">
+    <input type="submit" name="confirm" value="confirm">
+    </form>
+    <a href="reserve.php">Book Again</a>
+</body>
+</html>

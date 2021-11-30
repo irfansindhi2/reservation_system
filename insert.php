@@ -8,7 +8,7 @@
 <body>
     <center>
         <?php
-  
+        session_start();
         $conn = mysqli_connect("localhost", "root", "", "reservation_system");
           
         // Check connection
@@ -21,7 +21,7 @@
         $date =  $_POST['date'];
 
         // Performing insert query execution
-        $sql = "INSERT INTO `reservation_log` (`reserve_time`) VALUES ('$date')";
+        $sql = "INSERT INTO reservation_log (table_ids) VALUES ('$_SESSION["total_table_ids"]')";
         
         if(mysqli_query($conn, $sql)){
             echo "Records inserted successfully.";

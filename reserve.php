@@ -1,17 +1,30 @@
+<?php
+require 'header.php';
+$_SESSION["error"] = "";
+
+if(!$_SESSION['post-data']){
+    $_SESSION['post-data'] = $_POST;
+}
+
+if(isset($_POST['submit'])){
+    $_SESSION['post-data'] = $_POST;
+    header('Location: book.php');
+}
+
+?>
+
 <!DOCTYPE html>
 <html lang="en">
   
 <head>
     <title>Reservation System</title>
 </head>
-<?
-session_start();
-?>
+
 <body>
     <center>
         <h1>Reservations Here!!!</h1>
   
-        <form action="redirect.php" method="post">
+        <form action="" method="post">
               
             <p>
                 <label for="fname">Name: </label>
@@ -30,11 +43,11 @@ session_start();
                 <input type="datetime-local" id="date" name="date" required>
             </p>  
             <p>
-                <label for="guests">Number of guests: </label>
-                <input type="number" id="guests" name="guests" required>
-            </p> 
+                <label for="guests">Number of Guests: </label>
+                <input type="number" id="guests" name="guests" min=1 required>
+            </p>
               
-            <input type="submit" value="Submit">
+            <input type="submit" name="submit" value="Submit">
         </form>
     </center>
 </body>

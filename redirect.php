@@ -1,3 +1,9 @@
+<?php
+require 'header.php';
+var_dump($_SESSION);
+
+?>
+
 <!DOCTYPE html>
 <html lang="en">
   
@@ -7,10 +13,7 @@
   
 <body>
     <center>
-    <?php
-    $_SESSION['post-data'] = $_POST;
-    //var_dump($_SESSION['post-data']);
-    ?>
+    
     <a href="login.php">LOG IN</a><br>
     <a href="signup.php">SIGN UP</a><br>
     <a href="continue.php">PROCEED AS GUEST</a><br>
