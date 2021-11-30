@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: 127.0.0.1
--- Generation Time: Nov 28, 2021 at 04:25 AM
+-- Generation Time: Nov 30, 2021 at 11:06 PM
 -- Server version: 10.4.21-MariaDB
 -- PHP Version: 7.3.31
 
@@ -29,11 +29,20 @@ SET time_zone = "+00:00";
 
 CREATE TABLE `reservation_log` (
   `reserve_id` int(255) NOT NULL,
-  `user_id` int(255) NOT NULL,
-  `date` datetime DEFAULT NULL,
+  `user_id` int(255) DEFAULT NULL,
+  `startdatetime` datetime DEFAULT NULL,
+  `enddatetime` datetime DEFAULT NULL,
   `guest_num` int(255) DEFAULT NULL,
   `table_ids` varchar(255) DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
+
+--
+-- Dumping data for table `reservation_log`
+--
+
+INSERT INTO `reservation_log` (`reserve_id`, `user_id`, `startdatetime`, `enddatetime`, `guest_num`, `table_ids`) VALUES
+(25, NULL, '2022-06-29 17:00:00', NULL, 6, '1,2'),
+(26, NULL, '2021-11-10 17:02:00', NULL, 8, '4');
 
 -- --------------------------------------------------------
 
@@ -52,11 +61,11 @@ CREATE TABLE `table_info` (
 --
 
 INSERT INTO `table_info` (`table_id`, `table_capacity`, `table_occupied`) VALUES
-(1, 2, 0),
-(2, 4, 0),
+(1, 2, 1),
+(2, 4, 1),
 (3, 6, 0),
-(4, 8, 0),
-(5, 2, 1);
+(4, 8, 1),
+(5, 2, 0);
 
 -- --------------------------------------------------------
 
@@ -70,9 +79,15 @@ CREATE TABLE `users` (
   `user_pass` varchar(255) DEFAULT NULL,
   `name` varchar(255) DEFAULT NULL,
   `phone` varchar(255) DEFAULT NULL,
-  `email` varchar(255) DEFAULT NULL,
-  `date` datetime DEFAULT NULL
+  `email` varchar(255) DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
+
+--
+-- Dumping data for table `users`
+--
+
+INSERT INTO `users` (`user_id`, `user_name`, `user_pass`, `name`, `phone`, `email`) VALUES
+(1, 'irfan', 'a', 'Irfan', '1234567890', 'irfansindhi2@gmail.com');
 
 --
 -- Indexes for dumped tables
@@ -104,7 +119,7 @@ ALTER TABLE `users`
 -- AUTO_INCREMENT for table `reservation_log`
 --
 ALTER TABLE `reservation_log`
-  MODIFY `reserve_id` int(255) NOT NULL AUTO_INCREMENT;
+  MODIFY `reserve_id` int(255) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=27;
 
 --
 -- AUTO_INCREMENT for table `table_info`
@@ -116,7 +131,7 @@ ALTER TABLE `table_info`
 -- AUTO_INCREMENT for table `users`
 --
 ALTER TABLE `users`
-  MODIFY `user_id` int(255) NOT NULL AUTO_INCREMENT;
+  MODIFY `user_id` int(255) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=2;
 COMMIT;
 
 /*!40101 SET CHARACTER_SET_CLIENT=@OLD_CHARACTER_SET_CLIENT */;
