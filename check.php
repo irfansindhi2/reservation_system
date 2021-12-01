@@ -1,6 +1,6 @@
 <?php
 require 'header.php';
-var_dump($_SESSION);
+// var_dump($_SESSION);
 $sql = "SELECT table_id, table_capacity FROM table_info WHERE";
 foreach($_POST['check_list'] as $table)
 {

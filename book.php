@@ -11,7 +11,7 @@ require 'header.php';
 <body>
 
 <?php
-var_dump($_SESSION);
+// var_dump($_SESSION);
 
 if(isset($_SESSION["error"])){
     $error = $_SESSION["error"];

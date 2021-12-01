@@ -4,7 +4,7 @@ require('header.php');
 
 <?php
 if(isset($_POST['confirm'])){
-    var_dump($_SESSION);
+    // var_dump($_SESSION);
     $tablesoccupied = true;
     $tidsarr = explode(',', $_SESSION['total_table_ids']);
     $idsql = "SELECT table_occupied FROM table_info WHERE";
@@ -27,12 +27,15 @@ if(isset($_POST['confirm'])){
             }   
         }
     }
-    echo $tablesoccupied;
+    
+    $enddatetime = date('Y-m-d H:i:s',strtotime('+1 hour',strtotime($_SESSION['post-data']['date'])));
+    
+
     if($tablesoccupied == false){
         // insert new reservation
-        $sql = "INSERT INTO reservation_log (startdatetime, guest_num, table_ids) VALUES ('{$_SESSION['post-data']['date']}', '{$_SESSION['post-data']['guests']}', '{$_SESSION['total_table_ids']}')";
+        $sql = "INSERT INTO reservation_log (startdatetime, enddatetime, guest_num, table_ids) VALUES ('{$_SESSION['post-data']['date']}', '$enddatetime', '{$_SESSION['post-data']['guests']}', '{$_SESSION['total_table_ids']}')";
         $conn->query($sql);
-        
+        echo $sql;
         // update occupied tables
         $sql = "UPDATE table_info SET table_occupied = '1' WHERE";
         foreach($tidsarr as $id)
@@ -40,7 +43,7 @@ if(isset($_POST['confirm'])){
             $sql .= " table_id=$id OR";
         }
         $sql = substr($sql, 0, -2);
-        echo $sql;
+        //echo $sql;
         $conn->query($sql);
     }else{
         echo "tables are already booked!";
