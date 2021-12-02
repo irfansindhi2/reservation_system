@@ -3,30 +3,32 @@ require('header.php');
 ?>
 
 <?php
-if(isset($_POST['confirm'])){
-    // var_dump($_SESSION);
-    $tablesoccupied = true;
-    $tidsarr = explode(',', $_SESSION['total_table_ids']);
-    $idsql = "SELECT table_occupied FROM table_info WHERE";
-    foreach($tidsarr as $id)
-    {
-        $idsql .= " table_id=$id OR";
-    }
-    $idsql = substr($idsql, 0, -2);
-    $result = $conn->query($idsql);
-    $result = $result->fetch_all();
+if(isset($_POST['contact-submit'])){
+    $_SESSION['contact-submit'] = $_POST['contact-submit'];
+    //var_dump($_SESSION);
+    // $tablesoccupied = true;
+    // $tidsarr = explode(',', $_SESSION['total_table_ids']);
+    // $idsql = "SELECT table_occupied FROM table_info WHERE";
+    // foreach($tidsarr as $id)
+    // {
+    //     $idsql .= " table_id=$id OR";
+    // }
+    // $idsql = substr($idsql, 0, -2);
+    // echo $idsql;
+    // $result = $conn->query($idsql);
+    // $result = $result->fetch_all();
     // print_r($result[0][0]);
 
-    foreach($result as $key=>$val){ 
-        foreach($val as $k=>$v){ 
-            if($v == 1){
-                $tablesoccupied = true;
-            }else{
-                $tablesoccupied = false;
-                //echo $v . '<br />';
-            }   
-        }
-    }
+    // foreach($result as $key=>$val){ 
+    //     foreach($val as $k=>$v){ 
+    //         if($v == 1){
+    //             $tablesoccupied = true;
+    //         }else{
+    //             $tablesoccupied = false;
+    //             //echo $v . '<br />';
+    //         }   
+    //     }
+    // }
     
     $enddatetime = date('Y-m-d H:i:s',strtotime('+1 hour',strtotime($_SESSION['post-data']['date'])));
     
@@ -45,6 +47,8 @@ if(isset($_POST['confirm'])){
         $sql = substr($sql, 0, -2);
         //echo $sql;
         $conn->query($sql);
+        $_SESSION['total_table_ids'] = "";
+        header('Location: index.php');
     }else{
         echo "tables are already booked!";
     }
@@ -56,17 +60,20 @@ if(isset($_POST['confirm'])){
   
 <head>
     <title>Review Reservation</title>
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css" integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
+    <link rel="stylesheet" href="css/form.css">
 </head>
 
 <body>
+<div class="container">  
+<form id="contact" action="" method="post">
     <?php
-        echo "<h1>You have reserved ". $_SESSION['table_seats']. " seat(s) of " . $_SESSION['table_counter'] . " tables </h1>";
+        echo "<h3>You are reserving ". $_SESSION['table_seats']. " seat(s) of " . $_SESSION['table_counter'] . " tables </h3>";
     ?>
     <br>
-    <h2>Confirm Reservation: </h2>
-    <form action="" method="post">
-    <input type="submit" name="confirm" value="confirm">
-    </form>
-    <a href="reserve.php">Book Again</a>
+    <button name="contact-submit" type="submit" id="contact-submit">Confirm</button>
+    <a href="reserve.php">Start Over</a>
+</form>
+</html>
 </body>
 </html>

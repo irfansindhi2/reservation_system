@@ -1,12 +1,15 @@
+<?php
+require 'header.php';
+// var_dump($_SESSION);
+?>
+
+
 <!DOCTYPE html>
 <html lang="en">
   
 <head>
     <title>Continue</title>
 </head>
-<?
-session_start();
-?>
 <body>
     <center>
         <h1>Continue</h1>

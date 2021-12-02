@@ -1,7 +1,10 @@
 <?php
 require 'header.php';
-// var_dump($_SESSION);
 $sql = "SELECT table_id, table_capacity FROM table_info WHERE";
+if(!isset($_POST['check_list'])){
+    header('Location: redirect.php');
+}
+
 foreach($_POST['check_list'] as $table)
 {
     $sql .= " table_id=$table OR";
